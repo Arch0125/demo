@@ -26,7 +26,7 @@ export default function Home() {
         popup?.close();
         //BASE Paymaster Integration
         try {
-          const { address, ev } = (await payUsingBase(privateKey))
+          const { address, ev } = (await payUsingBase(event.data))
           setAddress(address);
           setEv(ev?.transactionHash||"");
         } catch (e) {
