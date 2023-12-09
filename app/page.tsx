@@ -3,8 +3,16 @@ import Image from 'next/image'
 
 export default function Home() {
 
-  const generatePopUp= async()=>{
-    let popup = window.open("http://localhost:3000","Generating passkey","height=400,width=600,resizable=yes")
+  const generatePopUp = async () => {
+    let popup = window.open("http://localhost:3000", "Generating passkey", "height=400,width=600,resizable=yes")
+    window.addEventListener('message', (event) => {
+      if (event.origin !== "http://localhost:3000") return;
+
+      if (typeof event.data === 'string') {
+        console.log("Received value from popup:", event.data);
+        popup?.close();
+      }
+    }, false);
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
