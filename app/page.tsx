@@ -3,15 +3,15 @@ import Image from 'next/image'
 import { generateUsingBase, payUsingBase } from "paasskeys-server"
 import { useState } from 'react';
 import { client } from '@passwordless-id/webauthn'
-import {ethers} from "ethers";
+import { ethers } from "ethers";
 
 export default function Home() {
 
   const [privateKey, setPrivateKey] = useState("");
   const [address, setAddress] = useState("");
   const [ev, setEv] = useState("");
-  const[addr,setAddr]=useState("");
-  const[tx,setTx]=useState("");
+  const [addr, setAddr] = useState("");
+  const [tx, setTx] = useState("");
   const generatePopUp = async () => {
     let parentUrl = window.location.href; // Or window.location.origin for just the origin
     let popupUrl = "http://localhost:3000?parentUrl=" + encodeURIComponent(parentUrl) + "&username=" + encodeURIComponent("passkeys");
@@ -25,9 +25,9 @@ export default function Home() {
         setPrivateKey(event.data)
         popup?.close();
         //BASE Paymaster Integration
-          const address = (await generateUsingBase(event.data))
-          setAddress(address);
-          // setEv(ev?.transactionHash||"");
+        const address = (await generateUsingBase(event.data))
+        setAddress(address);
+        // setEv(ev?.transactionHash||"");
       }
     }, false);
   }
@@ -45,41 +45,71 @@ export default function Home() {
 
     console.log(registration)
     const pvtkey = ethers.keccak256(ethers.toUtf8Bytes(registration.credential.id));
-    const address=await generateUsingBase(pvtkey);
+    const address = await generateUsingBase(pvtkey);
     setAddr(address);
     // setTx(ev?.transactionHash||"");
   }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-row items-center justify-between p-24">
       {/* <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <button onClick={generatePopUp} className='text-white'>Generate</button>
       </div> */}
-      <div className='flex flex-row h-full w-full' >
-        <div className='flex flex-col h-full w-1/2 items-center justify-center' >
-          <p>With SDK</p>
-          <button onClick={generatePopUp}  className='bg-white px-4 py-2 text-black rounded-xl text-xl m-4' >
-            Generate SCW
-          </button>
-          <p className='text-xl'>
-            SCW Address : {address}
-          </p>
-          <p className='text-xl'>
-            Transaction Hash : {ev}
+      <div className="">
+        {" "}
+        <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm lg:flex">
+          <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-2 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+            With SDK&nbsp;
           </p>
         </div>
-        <div className='flex flex-col h-full w-1/2 items-center justify-center' >
-          <p>Without SDK</p>
-          <button onClick={generateClientRegister} className='bg-white px-4 py-2 text-black rounded-xl text-xl m-4' >
-            Generate SCW
-          </button>
-          <p className='text-xl'>
-            SCW Address : {addr}
+        <div className="flex  items-center justify-center p-12">
+          <div className="max-w-sm rounded-3xl bg-gradient-to-b from-sky-300 to-purple-500 p-px dark:from-gray-800 dark:to-transparent">
+            <div className="rounded-[calc(1.5rem-1px)] bg-white px-10 p-12 dark:bg-gray-900">
+              <div>
+                <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
+                  Create Smart Wallet
+                </h1>
+                <p className="text-sm tracking-wide text-gray-600 dark:text-gray-300">
+                  Powered by Stackup
+                </p>
+              </div>
+
+              <div className="mt-8 space-y-8">
+                <p>Acc : {address.slice(0, 7)}...{address.slice(36)}</p>
+                <button onClick={generatePopUp} className="h-9 px-3 w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:bg-blue-700 transition duration-500 rounded-md text-white">
+                  Generate & Send Tx
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm lg:flex">
+          <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-2 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+            Without SDK&nbsp;
           </p>
-          <p className='text-xl'>
-            Transaction Hash : {tx}
-          </p>
+        </div>
+        <div className="flex  items-center justify-center p-12">
+          <div className="max-w-sm rounded-3xl bg-gradient-to-b from-sky-300 to-purple-500 p-px dark:from-gray-800 dark:to-transparent">
+            <div className="rounded-[calc(1.5rem-1px)] bg-white px-10 p-12 dark:bg-gray-900">
+              <div>
+                <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
+                  Create Smart Wallet
+                </h1>
+                <p className="text-sm tracking-wide text-gray-600 dark:text-gray-300">
+                  Powered by Stackup
+                </p>
+              </div>
+
+              <div className="mt-8 space-y-8">
+                <p>Acc : {addr.slice(0, 7)}...{addr.slice(36)}</p>
+                <button onClick={generateClientRegister} className="h-9 px-3 w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:bg-blue-700 transition duration-500 rounded-md text-white">
+                  Generate & Send Tx
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
     </main>
   )
 }
