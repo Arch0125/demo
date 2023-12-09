@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { payUsingBase } from "paasskeys-server"
+import { generateUsingBase, payUsingBase } from "paasskeys-server"
 import { useState } from 'react';
 import { client } from '@passwordless-id/webauthn'
 import {ethers} from "ethers";
@@ -25,13 +25,9 @@ export default function Home() {
         setPrivateKey(event.data)
         popup?.close();
         //BASE Paymaster Integration
-        try {
-          const { address, ev } = (await payUsingBase(event.data))
+          const address = (await generateUsingBase(event.data))
           setAddress(address);
-          setEv(ev?.transactionHash||"");
-        } catch (e) {
-          console.log(e)
-        }
+          // setEv(ev?.transactionHash||"");
       }
     }, false);
   }
@@ -49,9 +45,9 @@ export default function Home() {
 
     console.log(registration)
     const pvtkey = ethers.keccak256(ethers.toUtf8Bytes(registration.credential.id));
-    const{address,ev}=await payUsingBase(pvtkey);
+    const address=await generateUsingBase(pvtkey);
     setAddr(address);
-    setTx(ev?.transactionHash||"");
+    // setTx(ev?.transactionHash||"");
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -61,25 +57,25 @@ export default function Home() {
       <div className='flex flex-row h-full w-full' >
         <div className='flex flex-col h-full w-1/2 items-center justify-center' >
           <p>With SDK</p>
-          <button onClick={generatePopUp} >
-            Generate
+          <button onClick={generatePopUp}  className='bg-white px-4 py-2 text-black rounded-xl text-xl m-4' >
+            Generate SCW
           </button>
-          <p>
+          <p className='text-xl'>
             SCW Address : {address}
           </p>
-          <p>
+          <p className='text-xl'>
             Transaction Hash : {ev}
           </p>
         </div>
         <div className='flex flex-col h-full w-1/2 items-center justify-center' >
           <p>Without SDK</p>
-          <button onClick={generateClientRegister} >
-            Generate
+          <button onClick={generateClientRegister} className='bg-white px-4 py-2 text-black rounded-xl text-xl m-4' >
+            Generate SCW
           </button>
-          <p>
+          <p className='text-xl'>
             SCW Address : {addr}
           </p>
-          <p>
+          <p className='text-xl'>
             Transaction Hash : {tx}
           </p>
         </div>
