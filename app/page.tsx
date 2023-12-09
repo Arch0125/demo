@@ -4,8 +4,10 @@ import Image from 'next/image'
 export default function Home() {
 
   const generatePopUp = async () => {
-    let popup = window.open("http://localhost:3000", "Generating passkey", "height=400,width=600,resizable=yes")
-    window.addEventListener('message', (event) => {
+    let parentUrl = window.location.href; // Or window.location.origin for just the origin
+    let popupUrl = "http://localhost:3000?parentUrl=" + encodeURIComponent(parentUrl);
+    let popup = window.open(popupUrl, "Generating passkey", "height=400,width=600,resizable=yes");
+        window.addEventListener('message', (event) => {
       if (event.origin !== "http://localhost:3000") return;
 
       if (typeof event.data === 'string') {
