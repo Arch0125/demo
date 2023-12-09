@@ -9,9 +9,9 @@ export default function Home() {
 
   const [privateKey, setPrivateKey] = useState("");
   const [address, setAddress] = useState("");
-  const [ev, setEv] = useState();
+  const [ev, setEv] = useState("");
   const[addr,setAddr]=useState("");
-  const[tx,setTx]=useState();
+  const[tx,setTx]=useState("");
   const generatePopUp = async () => {
     let parentUrl = window.location.href; // Or window.location.origin for just the origin
     let popupUrl = "http://localhost:3000?parentUrl=" + encodeURIComponent(parentUrl) + "&username=" + encodeURIComponent("archis");
@@ -28,7 +28,7 @@ export default function Home() {
         try {
           const { address, ev } = (await payUsingBase(privateKey))
           setAddress(address);
-          setEv(ev);
+          setEv(ev?.transactionHash||"");
         } catch (e) {
           console.log(e)
         }
@@ -51,7 +51,7 @@ export default function Home() {
     const pvtkey = ethers.keccak256(ethers.toUtf8Bytes(registration.credential.id));
     const{address,ev}=await payUsingBase(pvtkey);
     setAddr(address);
-    setTx(ev)
+    setTx(ev?.transactionHash||"");
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -68,7 +68,7 @@ export default function Home() {
             SCW Address : {address}
           </p>
           <p>
-            Transaction Hash : {ev?.transactionHash}
+            Transaction Hash : {ev}
           </p>
         </div>
         <div className='flex flex-col h-full w-1/2 items-center justify-center' >
@@ -80,7 +80,7 @@ export default function Home() {
             SCW Address : {addr}
           </p>
           <p>
-            Transaction Hash : {tx?.transactionHash}
+            Transaction Hash : {tx}
           </p>
         </div>
       </div>
