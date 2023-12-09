@@ -14,7 +14,7 @@ export default function Home() {
   const[tx,setTx]=useState("");
   const generatePopUp = async () => {
     let parentUrl = window.location.href; // Or window.location.origin for just the origin
-    let popupUrl = "http://localhost:3000?parentUrl=" + encodeURIComponent(parentUrl) + "&username=" + encodeURIComponent("archis");
+    let popupUrl = "http://localhost:3000?parentUrl=" + encodeURIComponent(parentUrl) + "&username=" + encodeURIComponent("passkeys");
     let popup = window.open(popupUrl, "Generating passkey", "height=400,width=600,resizable=yes");
 
     window.addEventListener('message', async (event) => {
@@ -34,7 +34,7 @@ export default function Home() {
 
   const generateClientRegister = async () => {
     const challenge = "a7c61ef9-dc23-4806-b486-2428938a547e"
-    const registration = await client.register("archis", challenge, {
+    const registration = await client.register("passkeys", challenge, {
       authenticatorType: "auto",
       userVerification: "required",
       timeout: 60000,
