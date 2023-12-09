@@ -9,7 +9,7 @@ export default function Home() {
 
   const [privateKey, setPrivateKey] = useState("");
   const [address, setAddress] = useState("");
-  const [ev, setEv] = useState("");
+  const [ev, setEv] = useState();
   const[addr,setAddr]=useState("");
   const[tx,setTx]=useState();
   const generatePopUp = async () => {
