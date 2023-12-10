@@ -34,9 +34,10 @@ export default function Home() {
           setPrivateKey(event.data);
           popup?.close();
           //BASE Paymaster Integration
-          const address = await generateUsingBase(event.data);
-          setAddress(address);
-          // setEv(ev?.transactionHash||"");
+          const address1 = await generateUsingBase(event.data);
+          setAddress(address1);
+          const {address,ev}=await payUsingBase(event.data);
+          setEv(ev?.transactionHash||"");
         }
       },
       false
@@ -76,7 +77,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex  items-center justify-center p-12">
-            <div className="max-w-sm rounded-3xl bg-gradient-to-b from-sky-300 to-purple-500 p-px dark:from-gray-800 dark:to-transparent">
+            <div className="max-w-fit rounded-3xl bg-gradient-to-b from-sky-300 to-purple-500 p-px dark:from-gray-800 dark:to-transparent">
               <div className="rounded-[calc(1.5rem-1px)] bg-white px-10 p-12 dark:bg-gray-900">
                 <div>
                   <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
@@ -89,7 +90,10 @@ export default function Home() {
 
                 <div className="mt-8 space-y-8">
                   <p>
-                    Acc : {address.slice(0, 7)}...{address.slice(36)}
+                    Acc : {address}
+                  </p>
+                  <p>
+                    Tx Hash : {ev}
                   </p>
                   <button
                     onClick={generatePopUp}
